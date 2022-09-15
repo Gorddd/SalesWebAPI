@@ -1,9 +1,9 @@
 ﻿namespace SalesWebAPI.Models
 {
-    public class Buyer
+    public record Buyer
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public List<int> SalesIds { get; set; } = new();
+        public int Id { get; init; }
+        public string Name { get; init; } = null!;
+        public List<int> SalesIds { get; init; } = new();
     }
 }

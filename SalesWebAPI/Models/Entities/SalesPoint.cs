@@ -1,9 +1,9 @@
 ﻿namespace SalesWebAPI.Models
 {
-    public class SalesPoint
+    public record SalesPoint
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public List<ProvidedProduct> ProvidedProducts { get; set; } = new();
+        public int Id { get; init; }
+        public string Name { get; init; } = null!;
+        public List<ProvidedProduct> ProvidedProducts { get; init; } = new();
     }
 }

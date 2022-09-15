@@ -1,10 +1,10 @@
 ﻿namespace SalesWebAPI.Models
 {
-    public class SaleData
+    public record SaleData
     {
-        public int Id { get; set; }
-        public int ProductId { get; set; }
-        public int ProductQuantity { get; set; }
-        public int ProductIdAmount { get; set; }
+        public int Id { get; init; }
+        public int ProductId { get; init; }
+        public int ProductQuantity { get; init; }
+        public int ProductIdAmount { get; init; }
     }
 }
