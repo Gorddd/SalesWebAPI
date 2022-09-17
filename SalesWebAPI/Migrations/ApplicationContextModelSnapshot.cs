@@ -30,6 +30,18 @@ namespace SalesWebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Buyers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Tom"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Jack"
+                        });
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.Product", b =>
@@ -53,7 +65,7 @@ namespace SalesWebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Fuck",
+                            Name = "FuckToy",
                             Price = 228.0
                         },
                         new
@@ -65,7 +77,7 @@ namespace SalesWebAPI.Migrations
                         new
                         {
                             Id = 3,
-                            Name = "df",
+                            Name = "Smth",
                             Price = 2344.0
                         });
                 });
@@ -87,9 +99,41 @@ namespace SalesWebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("SalesPointId");
 
                     b.ToTable("ProvidedProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductId = 1,
+                            ProductQuantity = 2,
+                            SalesPointId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductId = 2,
+                            ProductQuantity = 2,
+                            SalesPointId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ProductId = 1,
+                            ProductQuantity = 2,
+                            SalesPointId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ProductId = 2,
+                            ProductQuantity = 2,
+                            SalesPointId = 2
+                        });
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.Sale", b =>
@@ -112,14 +156,36 @@ namespace SalesWebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TotalAmount")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
 
+                    b.HasIndex("SalesPointId");
+
                     b.ToTable("Sales");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BuyerId = 1,
+                            Date = "12.05.2020",
+                            SalesPointId = 1,
+                            Time = "12:34:02",
+                            TotalAmount = 228.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BuyerId = 2,
+                            Date = "28.08.2021",
+                            SalesPointId = 2,
+                            Time = "10:45:23",
+                            TotalAmount = 3681.0
+                        });
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.SaleData", b =>
@@ -137,14 +203,42 @@ namespace SalesWebAPI.Migrations
                     b.Property<int>("ProductQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SaleId")
+                    b.Property<int>("SaleId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("SaleId");
 
                     b.ToTable("SaleDatas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductId = 1,
+                            ProductIdAmount = 228,
+                            ProductQuantity = 1,
+                            SaleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductId = 2,
+                            ProductIdAmount = 1337,
+                            ProductQuantity = 1,
+                            SaleId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ProductId = 3,
+                            ProductIdAmount = 2344,
+                            ProductQuantity = 1,
+                            SaleId = 2
+                        });
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.SalesPoint", b =>
@@ -160,15 +254,35 @@ namespace SalesWebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SalesPoints");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Eldorado"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "DnsShop"
+                        });
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.ProvidedProduct", b =>
                 {
+                    b.HasOne("SalesWebAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SalesWebAPI.Models.SalesPoint", null)
                         .WithMany("ProvidedProducts")
                         .HasForeignKey("SalesPointId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.Sale", b =>
@@ -176,13 +290,31 @@ namespace SalesWebAPI.Migrations
                     b.HasOne("SalesWebAPI.Models.Buyer", null)
                         .WithMany("SalesIds")
                         .HasForeignKey("BuyerId");
+
+                    b.HasOne("SalesWebAPI.Models.SalesPoint", "SalesPoint")
+                        .WithMany()
+                        .HasForeignKey("SalesPointId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SalesPoint");
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.SaleData", b =>
                 {
+                    b.HasOne("SalesWebAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SalesWebAPI.Models.Sale", null)
                         .WithMany("SalesData")
-                        .HasForeignKey("SaleId");
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("SalesWebAPI.Models.Buyer", b =>

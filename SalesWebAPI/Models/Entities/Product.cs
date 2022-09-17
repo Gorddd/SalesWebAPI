@@ -1,9 +1,10 @@
-﻿namespace SalesWebAPI.Models
+﻿namespace SalesWebAPI.Models;
+
+public record Product
 {
-    public record Product
-    {
-        public int Id { get; init; }
-        public string Name { get; init; } = null!;
-        public double Price { get; init; }
-    }
+    public int Id { get; init; }
+
+    public string Name { get; init; } = null!;
+
+    public double Price { get; init; }
 }
