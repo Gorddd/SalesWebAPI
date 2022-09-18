@@ -6,5 +6,5 @@ public record Buyer
 
     public string Name { get; init; } = null!;
 
-    public List<Sale> SalesIds { get; init; } = null!;
+    public ICollection<Sale> SalesIds { get; init; } = null!;
 }

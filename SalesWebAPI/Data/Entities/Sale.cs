@@ -13,7 +13,7 @@ public record Sale
 
     public int? BuyerId { get; init; }
 
-    public List<SaleData> SalesData { get; init; } = null!;
+    public ICollection<SaleData> SalesData { get; init; } = null!;
 
     public double TotalAmount { get; init; }
 }

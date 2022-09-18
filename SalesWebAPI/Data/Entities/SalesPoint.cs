@@ -6,5 +6,5 @@ public record SalesPoint
 
     public string Name { get; init; } = null!;
 
-    public List<ProvidedProduct> ProvidedProducts { get; init; } = null!;
+    public ICollection<ProvidedProduct> ProvidedProducts { get; init; } = null!;
 }
