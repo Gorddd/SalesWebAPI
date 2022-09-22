@@ -1,6 +1,8 @@
-﻿namespace SalesWebAPI.Models;
+﻿using SalesWebAPI.Data;
 
-public record Sale
+namespace SalesWebAPI.Models;
+
+public record Sale : IModel
 {
     public int Id { get; init; }
 
