@@ -24,30 +24,60 @@ class DataManager<TModel> : IDataManager<TModel> where TModel : class, IModel
         throw new TypeAccessException($"There is no {nameof(DbSet<TModel>)} in {nameof(ApplicationContext)}");
     }
 
+    /// <summary>
+    /// Add the object to database
+    /// </summary>
+    /// <param name="item">object to add</param>
+    /// <returns></returns>
     public async Task Add(TModel item)
     {
         await dbSet.AddAsync(item);
         await context.SaveChangesAsync();
     }
 
-    public async Task Delete(int id)
+    /// <summary>
+    /// Delete the object from database
+    /// </summary>
+    /// <param name="id">Id of the object to delete</param>
+    /// <returns>true if the object has been deleted; false if the object with the id hasn't been found</returns>
+    public async Task<bool> Delete(int id)
     {
         var itemToDelete = await dbSet.FirstOrDefaultAsync(item => item.Id == id);
-        
+        if (itemToDelete is null)
+            return false;
+
+        dbSet.Remove(itemToDelete);
+        await context.SaveChangesAsync();
+        return true;
     }
 
-    public IEnumerable<Task<TModel>> Get()
+    /// <summary>
+    /// Get all objects from database
+    /// </summary>
+    /// <returns>all items</returns>
+    public async Task<IEnumerable<TModel>> Get()
     {
-        throw new NotImplementedException();
+        return await dbSet.ToListAsync();
     }
 
-    public Task<TModel> Get(int id)
+    /// <summary>
+    /// Get object by Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>object or null if object hasn't been found</returns>
+    public async Task<TModel>? Get(int id)
     {
-        throw new NotImplementedException();
+        return await dbSet.FirstOrDefaultAsync(item => item.Id == id);
     }
 
-    public Task Update(int id, TModel updatedItem)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id">id of item to update</param>
+    /// <returns>true if object has been updated or false if hasn't been found</returns>
+    public async Task Update(TModel updatedItem)
     {
-        throw new NotImplementedException();
+        dbSet.Update(updatedItem);
+        await context.SaveChangesAsync();
     }
 }

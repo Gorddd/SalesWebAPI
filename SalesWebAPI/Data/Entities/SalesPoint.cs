@@ -2,11 +2,11 @@
 
 namespace SalesWebAPI.Models;
 
-public record SalesPoint : IModel
+public class SalesPoint : IModel
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
 
-    public string Name { get; init; } = null!;
+    public string Name { get; set; } = null!;
 
-    public ICollection<ProvidedProduct> ProvidedProducts { get; init; } = null!;
+    public ICollection<ProvidedProduct> ProvidedProducts { get; set; } = null!;
 }

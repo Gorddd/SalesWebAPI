@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SalesWebAPI.Models;
+using SalesWebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +10,10 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(connection));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSalesWebAPIServices();
 
 var app = builder.Build();
 

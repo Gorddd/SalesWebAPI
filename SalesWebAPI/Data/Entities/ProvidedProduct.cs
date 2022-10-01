@@ -2,14 +2,14 @@
 
 namespace SalesWebAPI.Models;
 
-public record ProvidedProduct : IModel
+public class ProvidedProduct : IModel
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
 
-    public int SalesPointId { get; init; }
+    public int SalesPointId { get; set; }
 
-    public int ProductId { get; init; }
-    public Product Product { get; init; } = null!;
+    public int ProductId { get; set; }
+    public Product Product { get; set; } = null!;
 
-    public int ProductQuantity { get; init; }
+    public int ProductQuantity { get; set; }
 }

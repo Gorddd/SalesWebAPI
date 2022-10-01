@@ -1,14 +1,14 @@
 ﻿namespace SalesWebAPI.Data;
 
-interface IDataManager<TModel>
+public interface IDataManager<TModel>
 {
-    IEnumerable<Task<TModel>> Get();
+    Task<IEnumerable<TModel>> Get();
 
-    Task<TModel> Get(int id);
+    Task<TModel>? Get(int id);
 
     Task Add(TModel item);
 
-    Task Update(int id, TModel updatedItem);
+    Task Update(TModel updatedItem);
 
-    Task Delete(int Id);
+    Task<bool> Delete(int Id);
 }

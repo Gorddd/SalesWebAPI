@@ -2,11 +2,11 @@
 
 namespace SalesWebAPI.Models;
 
-public record Buyer : IModel
+public class Buyer : IModel
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
 
-    public string Name { get; init; } = null!;
+    public string Name { get; set; } = null!;
 
-    public ICollection<Sale> SalesIds { get; init; } = null!;
+    public ICollection<Sale> SalesIds { get; set; } = null!;
 }
