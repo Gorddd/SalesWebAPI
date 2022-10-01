@@ -1,6 +1,6 @@
 ﻿namespace SalesWebAPI.Data;
 
-public interface IDataManager<TModel>
+public interface IDataManager<TModel> 
 {
     Task<IEnumerable<TModel>> Get();
 

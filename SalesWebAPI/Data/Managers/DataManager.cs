@@ -6,22 +6,12 @@ namespace SalesWebAPI.Data;
 class DataManager<TModel> : IDataManager<TModel> where TModel : class, IModel
 {
     private readonly ApplicationContext context;
-
     private readonly DbSet<TModel> dbSet;
 
     public DataManager(ApplicationContext context)
     {
         this.context = context;
-        dbSet = GetDbSet(context);
-    }
-
-    private DbSet<TModel>? GetDbSet(ApplicationContext context) //мб сделать async
-    {
-        foreach (var property in typeof(ApplicationContext).GetProperties())
-            if (property.PropertyType.Equals(typeof(DbSet<TModel>)))
-                return property.GetValue(context, null) as DbSet<TModel>;
-
-        throw new TypeAccessException($"There is no {nameof(DbSet<TModel>)} in {nameof(ApplicationContext)}");
+        dbSet = context.Set<TModel>();
     }
 
     /// <summary>
@@ -42,7 +32,7 @@ class DataManager<TModel> : IDataManager<TModel> where TModel : class, IModel
     /// <returns>true if the object has been deleted; false if the object with the id hasn't been found</returns>
     public async Task<bool> Delete(int id)
     {
-        var itemToDelete = await dbSet.FirstOrDefaultAsync(item => item.Id == id);
+        var itemToDelete = await Get(id);
         if (itemToDelete is null)
             return false;
 

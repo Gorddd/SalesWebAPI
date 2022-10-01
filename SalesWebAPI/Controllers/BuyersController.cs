@@ -47,14 +47,10 @@ namespace SalesWebAPI.Controllers
                 return NotFound();
         }
 
-        [HttpPut("{id}")]
-        public async Task Update(int id, Buyer updatedBuyer)
+        [HttpPut]
+        public async Task Update(Buyer updatedBuyer)
         {
-            var buyerToUpdate = await dataManager.Get(id);
-
-            buyerToUpdate.Name = updatedBuyer.Name;
-
-            await dataManager.Update(buyerToUpdate);
+            await dataManager.Update(updatedBuyer);
         }
     }
 }
